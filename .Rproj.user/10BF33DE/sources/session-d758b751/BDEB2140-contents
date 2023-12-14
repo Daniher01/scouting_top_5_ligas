@@ -10,14 +10,18 @@
 library(shiny)
 
 
-data = read.csv("../data/players_p90.csv")
+source("analisis_datos.R")
+data <- data_para_input()
+
 
 # Define server logic required to draw a histogram
 function(input, output, session) {
   
+  ## Busqueda de jugador para el menu
+  
   observeEvent(input$in_season, {
     # Filtrar las ligas basado en la temporada seleccionada
-    filtered_ligas <- data[data$season == input$in_season, "liga"]
+    filtered_ligas <- unique(data[data$season == input$in_season, "liga"])
     
     # Actualizar el input de la liga
     updateSelectInput(session, "in_liga", choices = filtered_ligas)
@@ -37,6 +41,24 @@ function(input, output, session) {
     
     # Actualizar el input del equipo
     updateSelectInput(session, "in_player", choices = filtered_players)
+  })
+  
+  ## OUTPUTS Para el dashboard
+  output$player_name <- renderText({
+    input$in_player
+  })
+  
+  output$promedio_liga <- renderTable({
+    
+    comparacion_promedio <- data_promedio_liga(input$in_player)
+    
+    comparacion_promedio_clean = comparacion_promedio %>%
+        
+        select("player_name", "position", "team_title", "time", "goals_p90", "x_g_p90","assists_p90", "x_a_p90", "shots_p90", "key_passes_p90", "npg_p90", "npx_g_p90", "x_g_chain_p90", "x_g_buildup_p90")
+  
+    # Agregar estilos a la tabla
+    #renderTable(comparacion_promedio_clean, include.rownames = FALSE, align = "c", digits = 2, sanitize.text.function = toupper)
+    
   })
   
 }
