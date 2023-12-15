@@ -53,7 +53,7 @@ function(input, output, session) {
   
   output$cantidad_promedio_liga <- renderText({
     
-    data <- data_promedio_liga(input$in_player)
+    data <- data_promedio_liga(input$in_player, input$in_liga)
     promedio_liga <- data$promedio_liga
     
     comparacion_promedio <- nrow(promedio_liga)
@@ -62,10 +62,12 @@ function(input, output, session) {
 
   output$promedio_liga <- renderTable({
     
-    data <- data_promedio_liga(input$in_player)
+    data <- data_promedio_liga(input$in_player, input$in_liga)
     promedio_liga <- data$promedio_liga
     
     data_player = data_percentiles_player(promedio_liga, input$in_player)
+    
+    ggplot(data_player, aes())
     
 
   })

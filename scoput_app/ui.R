@@ -15,7 +15,7 @@ data <- data_para_input()
 
 # Define UI for application that draws a histogram
 dashboardPage(
-  dashboardHeader(title = "Scouting Top 5 Ligas"),
+  dashboardHeader(title = "Scouting Jugadores Ofensivos", titleWidth = '100%'),
   dashboardSidebar(
     sidebarMenu(
       selectInput("in_season",

@@ -4,15 +4,15 @@ library(tidyr)
 data_players = read.csv("../data/players_p90.csv")
 
 metricas_p90 <- function(){
-  return(c("npx_g_p90", "x_a_p90", "shots_p90", "key_passes_p90", "npg_p90",  "x_g_chain_p90", "x_g_buildup_p90"))
+  return(c("npx_g_p90", "x_a_p90", "shots_p90", "npg_p90", "key_passes_p90",   "x_g_chain_p90", "x_g_buildup_p90"))
 }
 
 metricas_percentil <- function(){
-  return(c("npx_g_p90_percentil", "x_a_p90_percentil", "shots_p90_percentil", "key_passes_p90_percentil", "npg_p90_percentil", "x_g_chain_p90_percentil", "x_g_buildup_p90_percentil"))
+  return(c("npx_g_p90_percentil", "x_a_p90_percentil", "shots_p90_percentil",  "npg_p90_percentil", "key_passes_p90_percentil", "x_g_chain_p90_percentil", "x_g_buildup_p90_percentil"))
 }
 
 columnas_historico <- function(){
-  return(c("player_name", "position", "team_title", "goals", "assists", "time"))
+  return(c("player_name", "position", "team_title", "goals", "assists", "time", "games"))
 }
 
 data_para_input <- function() {
@@ -20,9 +20,9 @@ data_para_input <- function() {
   return(data_players)
 }
 
-data_promedio_liga <- function(player){
+data_promedio_liga <- function(player, liga_in){
   
-  target = data_players %>% filter(player_name == player)
+  target = data_players %>% filter(player_name == player & liga == liga_in)
   
   promedio_liga = data_players %>% 
     filter(position == target$position & liga == target$liga)
