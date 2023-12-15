@@ -8,6 +8,9 @@
 #
 
 library(shiny)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
 
 
 source("analisis_datos.R")
@@ -48,17 +51,24 @@ function(input, output, session) {
     input$in_player
   })
   
+  output$cantidad_promedio_liga <- renderText({
+    
+    data <- data_promedio_liga(input$in_player)
+    promedio_liga <- data$promedio_liga
+    
+    comparacion_promedio <- nrow(promedio_liga)
+
+  })
+
   output$promedio_liga <- renderTable({
     
-    comparacion_promedio <- data_promedio_liga(input$in_player)
+    data <- data_promedio_liga(input$in_player)
+    promedio_liga <- data$promedio_liga
     
-    comparacion_promedio_clean = comparacion_promedio %>%
-        
-        select("player_name", "position", "team_title", "time", "goals_p90", "x_g_p90","assists_p90", "x_a_p90", "shots_p90", "key_passes_p90", "npg_p90", "npx_g_p90", "x_g_chain_p90", "x_g_buildup_p90")
-  
-    # Agregar estilos a la tabla
-    #renderTable(comparacion_promedio_clean, include.rownames = FALSE, align = "c", digits = 2, sanitize.text.function = toupper)
+    data_player = data_percentiles_player(promedio_liga, input$in_player)
     
+
   })
+  
   
 }
