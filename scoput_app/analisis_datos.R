@@ -35,7 +35,7 @@ data_percentiles_player <- function(data, player){
   
   # obtener percentil
   liga_percentil = data %>%
-    mutate(across(ends_with("p90"), ~round(percent_rank(.x)*100, 1), .names = "{.col}_percentil"))
+    mutate(across(ends_with("p90"), ~round(percent_rank(.x), 1), .names = "{.col}_percentil"))
   
   #conbinar columnas
   ## para metricas p90

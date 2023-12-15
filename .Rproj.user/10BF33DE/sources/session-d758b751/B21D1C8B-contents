@@ -46,7 +46,7 @@ dashboardPage(
                fluidRow(
                  valueBox(textOutput("cantidad_promedio_liga"), "Jugadores comparados", icon = icon("credit-card")),
                ),
-               tabPanel("Tabla", tableOutput("promedio_liga"))
+               tabPanel("Tabla", plotOutput("promedio_liga"))
                ),
       
       # Panel 2
