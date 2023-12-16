@@ -9,6 +9,7 @@
 
 library(shiny)
 library(dplyr)
+library(tidyr)
 library(ggplot2)
 library(tidyr)
 library(glue)
@@ -58,13 +59,25 @@ function(input, output, session) {
     texto
   })
   
-  output$cantidad_promedio_liga <- renderText({
+  output$cantidad_promedio_liga <- renderValueBox({
     
     data <- data_promedio_liga(input$in_player, input$in_liga)
     promedio_liga <- data$promedio_liga
     
     comparacion_promedio <- nrow(promedio_liga)
+    texto <- glue("Jugadores comparados en la liga de {input$in_liga} en la misma posición que {input$in_player}")
+    
+    valueBox(comparacion_promedio, texto)
 
+  })
+  
+  output$card_info_player <- renderTable({
+    
+    data_player_rs = data_para_input() %>%
+      filter(player_name == input$in_player) %>%
+      select(position, games, time, goals, assists)
+    
+    data_player_rs
   })
 
   output$promedio_liga_grafico <- renderPlot({

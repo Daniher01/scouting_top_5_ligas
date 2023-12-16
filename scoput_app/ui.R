@@ -15,7 +15,7 @@ data <- data_para_input()
 
 # Define UI for application that draws a histogram
 dashboardPage(
-  dashboardHeader(title = "Scouting Jugadores Ofensivos", titleWidth = '100%'),
+  dashboardHeader(title = "Scouting Jugadores Ofensivos", titleWidth = "20%"),
   dashboardSidebar(
     sidebarMenu(
       selectInput("in_season",
@@ -38,17 +38,19 @@ dashboardPage(
   ),
   dashboardBody(
     tabBox(
-      title = textOutput("player_name"),
+      title = "Métricas Ofensivas",
       # The id lets us use input$tabset1 on the server to find the current tab
       id = "tabset1", width = "100%",
       # Panel 1
       tabPanel("vs Promedio de su liga", 
                fluidRow(
-                 valueBox(textOutput("cantidad_promedio_liga"), textOutput("card_text"))
+                 valueBoxOutput(width = 6, "cantidad_promedio_liga"),
+                 valueBox(width = 6, textOutput("player_name"), tableOutput("card_info_player"), icon = icon("person"))
+                 
                ),
                fluidRow(
-                 box(tableOutput("promedio_liga_tabla")),
-                 box(plotOutput("promedio_liga_grafico"))
+                 box(width = 4, tableOutput("promedio_liga_tabla")),
+                 box(width = 8,  plotOutput("promedio_liga_grafico"))
                ),
                ),
       
