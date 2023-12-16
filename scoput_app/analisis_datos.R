@@ -1,14 +1,14 @@
 library(dplyr)
 library(tidyr)
 
-data_players = read.csv("../data/players_p90.csv")
+data_players = read.csv("../data/players_p90.csv", encoding = "UTF-8")
 
 metricas_p90 <- function(){
-  return(c("npx_g_p90", "x_a_p90", "shots_p90", "npg_p90", "key_passes_p90",   "x_g_chain_p90", "x_g_buildup_p90"))
+  return(c("npx_g_p90", "x_a_p90", "shots_p90", "npg_p90", "key_passes_p90",   "x_g_chain_p90"))
 }
 
 metricas_percentil <- function(){
-  return(c("npx_g_p90_percentil", "x_a_p90_percentil", "shots_p90_percentil",  "npg_p90_percentil", "key_passes_p90_percentil", "x_g_chain_p90_percentil", "x_g_buildup_p90_percentil"))
+  return(c("npx_g_p90_percentil", "x_a_p90_percentil", "shots_p90_percentil",  "npg_p90_percentil", "key_passes_p90_percentil", "x_g_chain_p90_percentil"))
 }
 
 columnas_historico <- function(){
@@ -53,9 +53,11 @@ data_percentiles_player <- function(data, player){
                               metric == "shots_p90" ~ "Shots",
                               metric == "key_passes_p90" ~ "Key Passes",
                               metric == "npg_p90" ~ "Goals (NP)",
-                              metric == "x_g_chain_p90" ~ "xG Chain",
-                              metric == "x_g_buildup_p90" ~ "xG Buildup")) %>%
+                              metric == "x_g_chain_p90" ~ "xG Chain")) %>%
     select(columnas_historico(), metric, p90, percentile)
+  
+  data_return$metric = factor(data_return$metric,
+                              levels = c("xG", "xA", "Key Passes", "xG Chain", "Shots", "Goals (NP)"))
     
   
   return(data_return)

@@ -44,9 +44,12 @@ dashboardPage(
       # Panel 1
       tabPanel("vs Promedio de su liga", 
                fluidRow(
-                 valueBox(textOutput("cantidad_promedio_liga"), "Jugadores comparados", icon = icon("credit-card")),
+                 valueBox(textOutput("cantidad_promedio_liga"), textOutput("card_text"))
                ),
-               tabPanel("Tabla", plotOutput("promedio_liga"))
+               fluidRow(
+                 box(tableOutput("promedio_liga_tabla")),
+                 box(plotOutput("promedio_liga_grafico"))
+               ),
                ),
       
       # Panel 2

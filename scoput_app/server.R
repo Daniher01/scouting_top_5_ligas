@@ -53,6 +53,11 @@ function(input, output, session) {
     input$in_player
   })
   
+  output$card_text <- renderText({
+    texto <- glue("Jugadores comparados en la liga de {input$in_liga} en la misma posición que {input$in_player}")
+    texto
+  })
+  
   output$cantidad_promedio_liga <- renderText({
     
     data <- data_promedio_liga(input$in_player, input$in_liga)
@@ -62,12 +67,20 @@ function(input, output, session) {
 
   })
 
-  output$promedio_liga <- renderPlot({
+  output$promedio_liga_grafico <- renderPlot({
     
     data <- data_promedio_liga(input$in_player, input$in_liga)
     promedio_liga <- data$promedio_liga
     
     data_player = data_percentiles_player(promedio_liga, input$in_player)
+    
+    # calcular el angulo del eje x
+    # viz
+    n_metrics = length(data_player$metric)
+    temp <- 360/n_metrics/2                                      #find the difference in angle between to labels and divide by two.
+    myAng <- seq(-temp, -360 + temp, length.out = n_metrics)     #get the angle for every label
+    ang <- ifelse(myAng < -90, myAng+180, myAng)                 #rotate label by 180 in some places for readability
+    ang <- ifelse(ang < -90, ang+180, ang)
     
     ggplot(data_player, aes(x = metric, y = percentile)) + 
       geom_bar(aes(y = 1), fill = "#023e8a", stat = "identity",
@@ -81,7 +94,7 @@ function(input, output, session) {
       scale_y_continuous(limits = c(-0.1, 1)) +
       coord_polar() +
 
-      geom_label(aes(label = round(p90, 2)), fill = "#e9d8a6", size = 2, color = "black", show.legend = FALSE) +
+      geom_label(aes(label = round(p90, 2)), fill = "#e9d8a6", size = 3, color = "black", show.legend = FALSE) +
 
       labs(fill = "",
            caption = glue("Percentiles respecto a jugadores de la misma posición \n\n Daniel  |  Data: Understat"),
@@ -94,15 +107,23 @@ function(input, output, session) {
             axis.title.y = element_blank(),
             axis.title.x = element_blank(),
             axis.text.y = element_blank(),
-            axis.text.x = element_text(size = 12), # las etiquetas del eje X van a tener un angulo (REVISAR)
+            axis.text.x = element_text(size = 12, angle = ang), # las etiquetas del eje X van a tener un angulo (REVISAR)
             plot.title = element_markdown(hjust = 0.5, size = 16),
             plot.subtitle = element_text(hjust = 0.5, size = 12),
             plot.caption = element_text(size = 10),
             panel.grid.major = element_blank(),
             panel.grid.minor = element_blank(),
-            plot.margin = margin(5, 2, 2, 2))
+            plot.margin = margin(10))
 
 
+  })
+  
+  output$promedio_liga_tabla <- renderTable({
+    data <- data_promedio_liga(input$in_player, input$in_liga)
+    promedio_liga <- data$promedio_liga
+    data_player = data_percentiles_player(promedio_liga, input$in_player) %>%
+                    select(metric, p90, percentile)
+    
   })
   
   
