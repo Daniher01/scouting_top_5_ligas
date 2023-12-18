@@ -10,6 +10,7 @@
 library(shiny)
 library(shinydashboard)
 library(gt)
+library(DT)
 
 source("analisis_datos.R")
 data <- data_para_input()
@@ -50,7 +51,7 @@ dashboardPage(
                  
                ),
                fluidRow(
-                 box(width = 4, tableOutput("promedio_liga_tabla")),
+                 box(width = 4, DTOutput("promedio_liga_tabla")),
                  box(width = 8,  plotOutput("promedio_liga_grafico"))
                ),
                ),

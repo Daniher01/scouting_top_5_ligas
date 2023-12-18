@@ -14,7 +14,6 @@ library(ggplot2)
 library(tidyr)
 library(glue)
 library(ggtext)
-library(DT)
 
 
 source("analisis_datos.R")
@@ -141,23 +140,19 @@ function(input, output, session) {
 
   })
   
-  output$promedio_liga_tabla <- render_gt({
+  output$promedio_liga_tabla <- renderDT({
     data <- data_promedio_liga(input$in_player, input$in_liga)
     promedio_liga <- data$promedio_liga
     data_player = data_percentiles_player(promedio_liga, input$in_player) %>%
       select(metric, p90, percentile)
     
-    gt(data_player) %>% 
-      tab_style(
-        style = cell_text(weight = "bold"),
-        locations = cells_column_labels(columns = everything())
-      )
+    datatable(data_player, options = list( searching = FALSE))
   })
   
   output$similitud_players <- renderDT({
     data_sim <- data_similitud_player(input$in_player)  %>%
       select(player_name, team_title, position, similitud) %>%
-      mutate(similitud = paste0(similitud*100, "%"))
+      mutate(similitud = paste0(similitud*100,"%"))
     
     datatable(data_sim, options = list(pageLength = 10, searching = FALSE))
   })
@@ -171,7 +166,7 @@ function(input, output, session) {
     
     comparacion_promedio <- nrow(data_sim)
 
-    texto <- glue("Jugadores con estilos de juego más similares a {input$in_player} en la misma posición")
+    texto <- glue("Jugadores con estilos de juego más similares a {input$in_player} en la misma posición en las 5 principales ligas")
     
     valueBox(comparacion_promedio, texto, color = color)
   })
