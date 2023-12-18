@@ -9,6 +9,7 @@
 
 library(shiny)
 library(shinydashboard)
+library(shinyWidgets)
 library(gt)
 library(DT)
 
@@ -51,21 +52,23 @@ dashboardPage(
                  
                ),
                fluidRow(
-                 box(width = 4, DTOutput("promedio_liga_tabla")),
-                 box(width = 8,  plotOutput("promedio_liga_grafico"))
+                 box(width = 6, DTOutput("promedio_liga_tabla")),
+                 box(width = 6,  plotOutput("promedio_liga_grafico"))
                ),
                ),
       
       # Panel 2
       tabPanel("Jugadores Similares", 
-               fluidRow(
-                 valueBoxOutput("info_box_sim")
-                 
-               ),
-               fluidRow(
-                 box( DTOutput("similitud_players"))
-               )
-               )
+           fluidRow(
+             valueBoxOutput("info_box_sim")
+             
+           ),
+           fluidRow(
+             box( DTOutput("similitud_players")),
+             box(uiOutput("lista_jugadores_similares"),
+                 DTOutput("simil_grafico"))
+           )
+       )
     ),
   )
 )

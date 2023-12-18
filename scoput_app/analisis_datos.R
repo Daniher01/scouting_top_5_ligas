@@ -79,6 +79,7 @@ data_similitud_player <- function(player){
   
   players_percentil = data_players %>%
     mutate(across(ends_with("p90"), ~round(percent_rank(.x), 1), .names = "{.col}_percentil"))
+
   
   target <- players_percentil %>% filter(player_name == player)
   

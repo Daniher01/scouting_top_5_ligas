@@ -144,9 +144,26 @@ function(input, output, session) {
     data <- data_promedio_liga(input$in_player, input$in_liga)
     promedio_liga <- data$promedio_liga
     data_player = data_percentiles_player(promedio_liga, input$in_player) %>%
-      select(metric, p90, percentile)
+      select(metric, p90, percentile) %>%
+      mutate(p90 = round(p90, 2))
     
     datatable(data_player, options = list( searching = FALSE))
+  })
+  
+  # Segundo Panel
+  
+  output$info_box_sim <- renderValueBox({
+    
+    data_sim <- data_similitud_player(input$in_player)
+    
+    color_df <- color_liga_df(input$in_liga)
+    color <- color_df$color_liga
+    
+    comparacion_promedio <- nrow(data_sim)
+    
+    texto <- glue("Jugadores con estilos de juego más similares a {input$in_player} en la misma posición en las 5 principales ligas")
+    
+    valueBox(comparacion_promedio, texto, color = color)
   })
   
   output$similitud_players <- renderDT({
@@ -157,20 +174,30 @@ function(input, output, session) {
     datatable(data_sim, options = list(pageLength = 10, searching = FALSE))
   })
   
-  output$info_box_sim <- renderValueBox({
+  output$lista_jugadores_similares <- renderUI({
     
     data_sim <- data_similitud_player(input$in_player)
-      
-    color_df <- color_liga_df(input$in_liga)
-    color <- color_df$color_liga
     
-    comparacion_promedio <- nrow(data_sim)
-
-    texto <- glue("Jugadores con estilos de juego más similares a {input$in_player} en la misma posición en las 5 principales ligas")
-    
-    valueBox(comparacion_promedio, texto, color = color)
+    pickerInput(
+      inputId = "in_player_simil",
+      label = "Jugador a comparar", 
+      choices = data_sim$player_name,
+      options = list(
+        `live-search` = TRUE)
+    )
   })
+
   
   
+  output$simil_grafico <- renderDT({
+    
+    data_sim <- data_similitud_player(input$in_player_simil)
+    data_player_2 = data_percentiles_player(data_sim, input$in_player_simil) ##
+    
+    
+    datatable(data_player_2, options = list( searching = FALSE))
+
+    
+  })
   
 }
