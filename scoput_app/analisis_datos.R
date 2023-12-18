@@ -1,5 +1,6 @@
 library(dplyr)
 library(tidyr)
+library(proxy)
 
 data_players = read.csv("../data/players_p90.csv", encoding = "UTF-8")
 
@@ -72,6 +73,31 @@ data_percentiles_player <- function(data, player){
   
   return(data_return)
   
+}
+
+data_similitud_player <- function(player){
+  
+  players_percentil = data_players %>%
+    mutate(across(ends_with("p90"), ~round(percent_rank(.x), 1), .names = "{.col}_percentil"))
+  
+  target <- players_percentil %>% filter(player_name == player)
+  
+  pos <- target$position
+  
+  data = players_percentil %>%
+    filter(position == pos & player_name != player) %>%
+    select(player_name, team_title, position, metricas_percentil())
+  
+  sim = simil(x = data %>% select(-c(player_name, team_title, position)),
+              y = target %>% select(metricas_percentil()),
+              methods = "cosine")
+  
+  output = data %>%
+    mutate(similitud = round(as.numeric(sim), 2)) %>%
+    arrange(desc(similitud)) %>%
+    mutate(player_name_ = player_name)
+  
+  return(output)
 }
 
 

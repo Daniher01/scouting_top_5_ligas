@@ -14,6 +14,7 @@ library(ggplot2)
 library(tidyr)
 library(glue)
 library(ggtext)
+library(DT)
 
 
 source("analisis_datos.R")
@@ -52,11 +53,6 @@ function(input, output, session) {
   ## OUTPUTS Para el dashboard
   output$player_name <- renderText({
     input$in_player
-  })
-  
-  output$card_text <- renderText({
-    texto <- glue("Jugadores comparados en la liga de {input$in_liga} en la misma posición que {input$in_player}")
-    texto
   })
   
   output$cantidad_promedio_liga <- renderValueBox({
@@ -156,6 +152,28 @@ function(input, output, session) {
         style = cell_text(weight = "bold"),
         locations = cells_column_labels(columns = everything())
       )
+  })
+  
+  output$similitud_players <- renderDT({
+    data_sim <- data_similitud_player(input$in_player)  %>%
+      select(player_name, team_title, position, similitud) %>%
+      mutate(similitud = paste0(similitud*100, "%"))
+    
+    datatable(data_sim, options = list(pageLength = 10, searching = FALSE))
+  })
+  
+  output$info_box_sim <- renderValueBox({
+    
+    data_sim <- data_similitud_player(input$in_player)
+      
+    color_df <- color_liga_df(input$in_liga)
+    color <- color_df$color_liga
+    
+    comparacion_promedio <- nrow(data_sim)
+
+    texto <- glue("Jugadores con estilos de juego más similares a {input$in_player} en la misma posición")
+    
+    valueBox(comparacion_promedio, texto, color = color)
   })
   
   

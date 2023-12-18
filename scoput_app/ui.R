@@ -58,9 +58,13 @@ dashboardPage(
       # Panel 2
       tabPanel("Jugadores Similares", 
                fluidRow(
-                 valueBox(10 * 2, "Jugadores buscados", icon = icon("credit-card")),
+                 valueBoxOutput("info_box_sim")
                  
-               ))
+               ),
+               fluidRow(
+                 box( DTOutput("similitud_players"))
+               )
+               )
     ),
   )
 )
