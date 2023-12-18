@@ -12,12 +12,22 @@ metricas_percentil <- function(){
 }
 
 columnas_historico <- function(){
-  return(c("player_name", "position", "team_title", "goals", "assists", "time", "games"))
+  return(c("player_name", "position", "team_title", "goals", "assists", "time", "games", "color_liga"))
 }
 
 data_para_input <- function() {
 
   return(data_players)
+}
+
+color_liga_df <- function(liga_in){
+  df_color <- data_players %>%
+    filter(liga == liga_in) %>%
+    select(liga, color_liga) %>%
+    distinct(liga, .keep_all = TRUE)
+
+  
+  return(df_color)
 }
 
 data_promedio_liga <- function(player, liga_in){

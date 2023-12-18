@@ -63,27 +63,41 @@ function(input, output, session) {
     
     data <- data_promedio_liga(input$in_player, input$in_liga)
     promedio_liga <- data$promedio_liga
+    color_df <- color_liga_df(input$in_liga)
+    color <- color_df$color_liga
     
     comparacion_promedio <- nrow(promedio_liga)
     texto <- glue("Jugadores comparados en la liga de {input$in_liga} en la misma posición que {input$in_player}")
     
-    valueBox(comparacion_promedio, texto)
+    valueBox(comparacion_promedio, texto, color = color)
 
   })
   
-  output$card_info_player <- renderTable({
+  output$card_info_player <- render_gt({
     
     data_player_rs = data_para_input() %>%
       filter(player_name == input$in_player) %>%
       select(position, games, time, goals, assists)
     
-    data_player_rs
+    titulo <- sprintf("**%s**", input$in_player)
+    
+    gt(data_player_rs) %>% 
+      tab_header(
+        title = md(titulo)
+      ) %>%
+      tab_style(
+        style = cell_text(weight = "bold"),
+        locations = cells_column_labels(columns = everything())
+      )
   })
 
   output$promedio_liga_grafico <- renderPlot({
     
     data <- data_promedio_liga(input$in_player, input$in_liga)
     promedio_liga <- data$promedio_liga
+    color_df <- color_liga_df(input$in_liga)
+    color <- color_df$color_liga
+    
     
     data_player = data_percentiles_player(promedio_liga, input$in_player)
     
@@ -96,9 +110,9 @@ function(input, output, session) {
     ang <- ifelse(ang < -90, ang+180, ang)
     
     ggplot(data_player, aes(x = metric, y = percentile)) + 
-      geom_bar(aes(y = 1), fill = "#023e8a", stat = "identity",
-               width = 1, colour = "white", alpha = 0.6, linetype = "dashed") +
-      geom_bar(fill = "#023047", stat = "identity", width = 1,  alpha = 0.8) +
+      geom_bar(aes(y = 1), fill = "#bdbdbd", stat = "identity",
+               width = 1, colour = "#636363", alpha = 0.6, linetype = "dashed") +
+      geom_bar(fill = color, stat = "identity", width = 1,  alpha = 0.8) +
       
       geom_hline(yintercept = 0.25, colour = "white", linetype = "longdash", alpha = 0.5)+
       geom_hline(yintercept = 0.50, colour = "white", linetype = "longdash", alpha = 0.5)+
@@ -110,7 +124,7 @@ function(input, output, session) {
       geom_label(aes(label = round(p90, 2)), fill = "#e9d8a6", size = 3, color = "black", show.legend = FALSE) +
 
       labs(fill = "",
-           caption = glue("Percentiles respecto a jugadores de la misma posición \n\n Daniel  |  Data: Understat"),
+           caption = glue("Percentiles respecto a jugadores de la misma posición \n\n  Data: Understat"),
            title = glue("{data_player$player_name[1]} ({data_player$team_title[1]})"),
            subtitle = glue("{input$in_liga} {input$in_season} | Estadísticas cada 90 min.")) +
       theme_minimal() +
@@ -120,7 +134,7 @@ function(input, output, session) {
             axis.title.y = element_blank(),
             axis.title.x = element_blank(),
             axis.text.y = element_blank(),
-            axis.text.x = element_text(size = 12, angle = ang), # las etiquetas del eje X van a tener un angulo (REVISAR)
+            axis.text.x = element_text(size = 12), # las etiquetas del eje X van a tener un angulo (REVISAR)
             plot.title = element_markdown(hjust = 0.5, size = 16),
             plot.subtitle = element_text(hjust = 0.5, size = 12),
             plot.caption = element_text(size = 10),
@@ -131,13 +145,19 @@ function(input, output, session) {
 
   })
   
-  output$promedio_liga_tabla <- renderTable({
+  output$promedio_liga_tabla <- render_gt({
     data <- data_promedio_liga(input$in_player, input$in_liga)
     promedio_liga <- data$promedio_liga
     data_player = data_percentiles_player(promedio_liga, input$in_player) %>%
-                    select(metric, p90, percentile)
+      select(metric, p90, percentile)
     
+    gt(data_player) %>% 
+      tab_style(
+        style = cell_text(weight = "bold"),
+        locations = cells_column_labels(columns = everything())
+      )
   })
+  
   
   
 }

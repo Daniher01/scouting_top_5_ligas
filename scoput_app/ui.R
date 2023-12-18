@@ -9,6 +9,7 @@
 
 library(shiny)
 library(shinydashboard)
+library(gt)
 
 source("analisis_datos.R")
 data <- data_para_input()
@@ -45,7 +46,7 @@ dashboardPage(
       tabPanel("vs Promedio de su liga", 
                fluidRow(
                  valueBoxOutput(width = 6, "cantidad_promedio_liga"),
-                 valueBox(width = 6, textOutput("player_name"), tableOutput("card_info_player"), icon = icon("person"))
+                  box(width = 6, tableOutput("card_info_player"))
                  
                ),
                fluidRow(
