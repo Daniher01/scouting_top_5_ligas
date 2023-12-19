@@ -61,12 +61,14 @@ dashboardPage(
       tabPanel("Jugadores Similares", 
            fluidRow(
              valueBoxOutput("info_box_sim")
-             
            ),
            fluidRow(
-             box( DTOutput("similitud_players")),
+             box( DTOutput("similitud_players"),
+                  ),
+             
              box(uiOutput("lista_jugadores_similares"),
-                 DTOutput("simil_grafico"))
+                 plotOutput("simil_grafico")
+               )
            )
        )
     ),

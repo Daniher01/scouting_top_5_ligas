@@ -42,7 +42,7 @@ data_promedio_liga <- function(player, liga_in){
   return(list(promedio_liga = promedio_liga, player = target))
 }
 
-data_percentiles_player <- function(data, player){
+data_percentiles_player <- function(data = data_players, player){
   
   # obtener percentil
   liga_percentil = data %>%
@@ -74,6 +74,7 @@ data_percentiles_player <- function(data, player){
   return(data_return)
   
 }
+
 
 data_similitud_player <- function(player){
   
