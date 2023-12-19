@@ -13,11 +13,16 @@ library(shinyWidgets)
 library(gt)
 library(DT)
 
-# library(rsconnect)
-# rsconnect::setAccountInfo(name='dhernandezm',
-#                           token='E1321464D5B33C8373C958B2DC5BF98E',
-#                           secret='WksE8QXGCypUtlKkKNF8uFbyaRgKK5gLaUOOSU7E')
-# deployApp(forceUpdate = TRUE)
+# Instala la última versión del paquete 'shinyapps'
+#install.packages("shinyapps")
+
+
+library(rsconnect)
+
+rsconnect::setAccountInfo(name='dhernandezm',
+                          token='00EB7871296A9ED859DCBD75779C8E0E',
+                          secret='71K1ZPjQUOVuj2mDBqTja/nw+BmlROWZXtrMi5PZ')
+deployApp()
 
 source("analisis_datos.R")
 data <- data_para_input()

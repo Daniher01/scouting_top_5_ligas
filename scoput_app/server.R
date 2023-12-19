@@ -32,6 +32,7 @@ function(input, output, session) {
     # Filtrar las ligas basado en la temporada seleccionada
     filtered_ligas <- unique(data[data$season == input$in_season, "liga"])
     
+    
     # Actualizar el input de la liga
     updateSelectInput(session, "in_liga", choices = filtered_ligas)
   })

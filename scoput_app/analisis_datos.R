@@ -2,7 +2,7 @@ library(dplyr)
 library(tidyr)
 library(proxy)
 
-data_players = read.csv("../data/players_p90.csv", encoding = "UTF-8")
+data_players = read.csv("data/players_p90.csv", encoding = "UTF-8")
 
 metricas_p90 <- function(){
   return(c("npx_g_p90", "x_a_p90", "shots_p90", "npg_p90", "key_passes_p90",   "x_g_chain_p90"))

@@ -44,6 +44,6 @@ Esta es una aplicación para hacer **scouting de jugadores en la 5 principales l
 
 -   **Key Passes:** Pases clave del jugador
 
--    **xG Chain:** eXpected Goals Chain. Cantidad de goles u ocasiones de gol en los que ha participado el jugador
+-   **xG Chain:** eXpected Goals Chain. Cantidad de goles u ocasiones de gol en los que ha participado el jugador
 
 -   **Metric p90:** La metrica del jugador normalizada cada 90 minutos
