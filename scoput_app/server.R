@@ -132,7 +132,7 @@ function(input, output, session) {
             axis.title.y = element_blank(),
             axis.title.x = element_blank(),
             axis.text.y = element_blank(),
-            axis.text.x = element_text(size = 12), # las etiquetas del eje X van a tener un angulo (REVISAR)
+            axis.text.x = element_text(size = 12, angle = ang), # las etiquetas del eje X van a tener un angulo (REVISAR)
             plot.title = element_markdown(hjust = 0.5, size = 16),
             plot.subtitle = element_text(hjust = 0.5, size = 12),
             plot.caption = element_text(size = 10),
@@ -254,7 +254,7 @@ function(input, output, session) {
             axis.title.y = element_blank(),
             axis.title.x = element_blank(),
             axis.text.y = element_blank(),
-            axis.text.x = element_text(size = 12), # las etiquetas del eje X van a tener un angulo (REVISAR)
+            axis.text.x = element_text(size = 12, angle = ang), # las etiquetas del eje X van a tener un angulo (REVISAR)
             plot.title = element_markdown(hjust = 0.5, size = 16),
             plot.subtitle = element_text(hjust = 0.5, size = 12),
             plot.caption = element_text(size = 10),

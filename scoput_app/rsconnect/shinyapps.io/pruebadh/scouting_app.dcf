@@ -1,0 +1,12 @@
+name: scouting_app
+title: scouting_app
+username: pruebadh
+account: pruebadh
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 10827303
+bundleId: 8066419
+url: https://dhernandezm.shinyapps.io/scouting_app/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
