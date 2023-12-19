@@ -52,11 +52,11 @@ function(input, output, session) {
     updateSelectInput(session, "in_player", choices = filtered_players)
   })
   
-  ## OUTPUTS Para el dashboard
-  output$player_name <- renderText({
-    input$in_player
-  })
+  ## -------------------- OUTPUTS Para el dashboard
   
+  # primer panel
+
+    
   output$cantidad_promedio_liga <- renderValueBox({
     
     data <- data_promedio_liga(input$in_player, input$in_liga)
@@ -150,7 +150,7 @@ function(input, output, session) {
       select(metric, p90, percentile) %>%
       mutate(p90 = round(p90, 2))
     
-    datatable(data_player, options = list( searching = FALSE))
+    datatable(data_player, options = list(pageLength = 10, lengthChange  = FALSE, searching = FALSE))
   })
   
   # Segundo Panel
@@ -169,12 +169,36 @@ function(input, output, session) {
     valueBox(width = 6, comparacion_promedio, texto, color = color)
   })
   
+  output$card_info_player_simil <- render_gt({
+    
+    data_player_rs = data_para_input() %>%
+      filter(player_name == input$in_player | player_name == input$in_player_simil) %>%
+      select(player_name, position, games, time, goals, assists, metricas_p90()) %>%
+      mutate(across(ends_with("p90"), ~round(.x, 2))) %>%
+      rename(player = player_name,
+             xG_p90 = npx_g_p90,
+             xA_p90 = x_a_p90,
+             goals_p90 = npg_p90,
+             xG_chain_p90 = x_g_chain_p90)
+    
+    gt(data_player_rs) %>% 
+      tab_style(
+        style = cell_text(weight = "bold"),
+        locations = cells_column_labels(columns = everything())
+      )  %>% 
+      cols_align(
+        align = "center",
+        columns = everything()
+      )
+  })
+  
   output$similitud_players <- renderDT({
     data_sim <- data_similitud_player(input$in_player)  %>%
       select(player_name, team_title, position, similitud) %>%
-      mutate(similitud = paste0(similitud*100,"%"))
+      mutate(similitud = paste0(similitud*100,"%"))  %>%
+      rename(player = player_name, team = team_title)
     
-    datatable(data_sim, options = list(pageLength = 10, searching = FALSE))
+    datatable(data_sim, options = list(pageLength = 10, lengthChange  = FALSE, searching = FALSE))
   })
   
   output$lista_jugadores_similares <- renderUI({
@@ -190,8 +214,6 @@ function(input, output, session) {
     )
   })
 
-  
-  
   output$simil_grafico <- renderPlot({
     
     data_player = data_percentiles_player(player = input$in_player)
@@ -212,6 +234,7 @@ function(input, output, session) {
       geom_bar(fill = color_player, stat = "identity", width = 1, alpha = 0.2, color = color_player) +
       geom_bar(data = data_player_2,aes(x = metric, y = percentile) ,fill = color_player_2, stat = "identity", width = 1, alpha = 0.2, color = color_player_2) +
       
+      
       geom_hline(yintercept = 0.25, colour = "white", linetype = "longdash", alpha = 0.5)+
       geom_hline(yintercept = 0.50, colour = "white", linetype = "longdash", alpha = 0.5)+
       geom_hline(yintercept = 0.75, colour = "white", linetype = "longdash", alpha = 0.5)+
@@ -220,7 +243,7 @@ function(input, output, session) {
       coord_polar() +
       
       labs(fill = "",
-           caption = glue("Percentiles respecto a jugadores de la misma posición \n\n  Data: Understat"),
+           caption = glue("Comparación de jugadores \n\n  Data: Understat"),
            title =
            glue("<b style = 'color: {color_player}'>{data_player$player_name[1]} ({data_player$team_title[1]}) <b style = 'color: black'>vs <b style = 'color: {color_player_2}'>{data_player_2$player_name[1]} ({data_player_2$team_title[1]}) "),
            subtitle = glue("Estadísticas cada 90 min.")) +
