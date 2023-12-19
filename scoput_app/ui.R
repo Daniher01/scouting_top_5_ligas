@@ -68,6 +68,11 @@ dashboardPage(
              
              box(width = 8, plotOutput("simil_grafico"))
            )
+       ),
+      
+      # Panel 3
+      tabPanel("Información de la app",
+           includeMarkdown("info_app.md")
        )
     ),
   )

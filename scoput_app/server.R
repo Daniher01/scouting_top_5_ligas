@@ -54,7 +54,7 @@ function(input, output, session) {
   
   ## -------------------- OUTPUTS Para el dashboard
   
-  # primer panel
+  # Primer panel
 
     
   output$cantidad_promedio_liga <- renderValueBox({
