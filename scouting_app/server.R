@@ -9,6 +9,9 @@
 
 # install.packages("fmsb")
 
+# Instala la última versión del paquete 'shinyapps'
+#install.packages("shinyapps")
+
 library(shiny)
 library(dplyr)
 library(tidyr)

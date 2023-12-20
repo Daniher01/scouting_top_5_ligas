@@ -1,0 +1,12 @@
+name: scouting_app
+title: scouting_app
+username: dhernandezm
+account: dhernandezm
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 10831466
+bundleId: 8069588
+url: https://dhernandezm.shinyapps.io/scouting_app/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE

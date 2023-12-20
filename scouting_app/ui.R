@@ -12,17 +12,14 @@ library(shinydashboard)
 library(shinyWidgets)
 library(gt)
 library(DT)
-
-# Instala la última versión del paquete 'shinyapps'
-#install.packages("shinyapps")
-
-
 library(rsconnect)
 
-rsconnect::setAccountInfo(name='dhernandezm',
-                          token='00EB7871296A9ED859DCBD75779C8E0E',
-                          secret='71K1ZPjQUOVuj2mDBqTja/nw+BmlROWZXtrMi5PZ')
-deployApp()
+# 
+# rsconnect::setAccountInfo(name='dhernandezm',
+#                           token='00EB7871296A9ED859DCBD75779C8E0E',
+#                           secret='71K1ZPjQUOVuj2mDBqTja/nw+BmlROWZXtrMi5PZ')
+
+# deployApp(appName = "scouting_app")
 
 source("analisis_datos.R")
 data <- data_para_input()
