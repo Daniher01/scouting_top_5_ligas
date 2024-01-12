@@ -2,21 +2,22 @@ library(readxl)
 library(janitor)
 library(dplyr)
 library(stringr)
+library(utils)
 
 # get data de los jugadores
-players_laliga_23 = read.csv("data/players_la_liga_23-24.csv") %>% clean_names() %>%
+players_laliga_23 = read.csv("scouting_app/data/players_la_liga_23-24.csv") %>% clean_names() %>%
   mutate(liga = as.factor("España"))
 
-players_bundesliga_23 = read.csv("data/players_bundesliga_23-24.csv") %>% clean_names() %>%
+players_bundesliga_23 = read.csv("scouting_app/data/players_bundesliga_23-24.csv") %>% clean_names() %>%
   mutate(liga = as.factor("Alemania"))
          
-players_premier_23 = read.csv("data/players_epl_23-24.csv") %>% clean_names() %>%
+players_premier_23 = read.csv("scouting_app/data/players_epl_23-24.csv") %>% clean_names() %>%
   mutate(liga = as.factor("Inglaterra"))
 
-players_ligue_1_23 = read.csv("data/players_ligue_1_23-24.csv") %>% clean_names() %>%
+players_ligue_1_23 = read.csv("scouting_app/data/players_ligue_1_23-24.csv") %>% clean_names() %>%
   mutate(liga = as.factor("Francia"))
 
-players_serie_a_23 = read.csv("data/players_serie_a_23-24.csv") %>% clean_names() %>%
+players_serie_a_23 = read.csv("scouting_app/data/players_serie_a_23-24.csv") %>% clean_names() %>%
   mutate(liga = as.factor("Italia"))
 
 # procesar los datos
@@ -42,5 +43,5 @@ players_p90 = df_players_23_24 %>%
 
 
 # guardar csv
-write.csv(players_p90, "data/players_p90.csv")
+write.csv(players_p90, "scouting_app/data/players_p90.csv")
 
